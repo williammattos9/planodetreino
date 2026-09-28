@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotina de Treino & Performance</title>
+  <style>
+    /* Design System & Reset estilo Apple */
+    :root {
+      --bg-color: #f5f5f7;
+      --card-bg: rgba(255, 255, 255, 0.8);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --text-primary: #1d1d1f;
+      --text-secondary: #86868b;
+      --accent: #0071e3;
+      --accent-badge: #f2f2f7;
+      --accent-badge-text: #1d1d1f;
+      --blur-bg: blur(20px);
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+      --radius: 20px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #000000;
+        --card-bg: rgba(28, 28, 30, 0.7);
+        --card-border: rgba(255, 255, 255, 0.12);
+        --text-primary: #f5f5f7;
+        --text-secondary: #a1a1a6;
+        --accent: #2997ff;
+        --accent-badge: #2c2c2e;
+        --accent-badge-text: #f5f5f7;
+        --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      line-height: 1.47059;
+      padding-bottom: 80px;
+    }
+
+    /* Navbar Flutuante Minimalista */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--card-bg);
+      backdrop-filter: var(--blur-bg);
+      -webkit-backdrop-filter: var(--blur-bg);
+      border-bottom: 1px solid var(--card-border);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav .logo {
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    nav .nav-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Cabeçalho Hero */
+    header {
+      max-width: 980px;
+      margin: 60px auto 40px;
+      padding: 0 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 48px;
+      line-height: 1.08349;
+      font-weight: 600;
+      letter-spacing: -0.003em;
+      margin-bottom: 12px;
+    }
+
+    header p {
+      font-size: 21px;
+      line-height: 1.381 min;
+      font-weight: 400;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Seções e Cards */
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .day-card {
+      background: var(--card-bg);
+      backdrop-filter: var(--blur-bg);
+      -webkit-backdrop-filter: var(--blur-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .day-title-group h2 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .day-title-group .focus {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .badge {
+      background-color: var(--accent-badge);
+      color: var(--accent-badge-text);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    /* Lista de Exercícios */
+    .exercise-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .exercise-item {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 2fr;
+      gap: 16px;
+      align-items: start;
+      padding: 16px;
+      border-radius: 12px;
+      background: rgba(128, 128, 128, 0.04);
+    }
+
+    .exercise-name {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .exercise-stats {
+      font-size: 14px;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .exercise-stats span {
+      display: inline-block;
+    }
+
+    .exercise-stats .highlight {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .exercise-instructions {
+      font-size: 14px;
+      line-height: 1.42857;
+      color: var(--text-secondary);
+    }
+
+    /* Modificadores para dias de descanso */
+    .rest-day {
+      background: linear-gradient(135deg, rgba(0, 113, 227, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    /* Responsividade para telas menores */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 36px;
+      }
+
+      header p {
+        font-size: 17px;
+      }
+
+      .day-card {
+        padding: 24px;
+      }
+
+      .exercise-item {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .exercise-stats {
+        flex-direction: row;
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Fitness</div>
+    <div class="nav-tag">Programa Semanal</div>
+  </nav>
+
+  <header>
+    <h1>Sua Rotina de Treino.</h1>
+    <p>Execução precisa, progressão constante e segurança em cada movimento.</p>
+  </header>
+
+  <main>
+
+    <!-- Segunda-feira -->
+    <section class="day-card">
+      <div class="day-header">
+        <div class="day-title-group">
+          <h2>Segunda-feira</h2>
+          <div class="focus">Peito, Ombros e Tríceps (A)</div>
+        </div>
+        <span class="badge">Dia A</span>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item">
+          <div class="exercise-name">Supino na Máquina (Chest Press)</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12 a 15</span></div>
+            <div>Descanso: <span class="highlight">60s</span></div>
+          </div>
+          <div class="exercise-instructions">Ajuste o banco para as alças ficarem na linha do meio do peito. Costas e cabeça coladas no encosto. Empurre sem travar os cotovelos no final.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Desenvolvimento na Máquina</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12 a 15</span></div>
+            <div>Descanso: <span class="highlight">60s</span></div>
+          </div>
+          <div class="exercise-instructions">Banco na altura dos ombros. Empurre para cima, mas não estenda (trave) os cotovelos totalmente no topo. Desça devagar até as orelhas.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Tríceps na Polia (Corda)</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12 a 15</span></div>
+            <div>Descanso: <span class="highlight">45s</span></div>
+          </div>
+          <div class="exercise-instructions">Cotovelos colados e fixos ao lado do corpo. Empurre a corda para baixo e abra as pontas no final. Apenas o antebraço se move.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Terça-feira -->
+    <section class="day-card">
+      <div class="day-header">
+        <div class="day-title-group">
+          <h2>Terça-feira</h2>
+          <div class="focus">Costas e Bíceps (B)</div>
+        </div>
+        <span class="badge">Dia B</span>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item">
+          <div class="exercise-name">Puxada Alta na Polia (Frente)</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12 a 15</span></div>
+            <div>Descanso: <span class="highlight">60s</span></div>
+          </div>
+          <div class="exercise-instructions">Ajuste o apoio de coxas. Puxe a barra em direção à parte superior do peito (clavícula). Nunca puxe atrás da nuca (risco de lesão no ombro).</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Remada Baixa Sentada</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12 a 15</span></div>
+            <div>Descanso: <span class="highlight">60s</span></div>
+          </div>
+          <div class="exercise-instructions">Pés apoiados, joelhos levemente flexionados. Puxe o triângulo em direção ao umbigo estufando o peito. Não balance o tronco para trás.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Rosca Direta na Máquina ou Halter</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12 a 15</span></div>
+            <div>Descanso: <span class="highlight">45s</span></div>
+          </div>
+          <div class="exercise-instructions">Mantenha os cotovelos fixos ao lado do corpo. Suba o peso contraindo o bíceps e desça controladamente sem deixar o peso “cair”.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quarta-feira -->
+    <section class="day-card">
+      <div class="day-header">
+        <div class="day-title-group">
+          <h2>Quarta-feira</h2>
+          <div class="focus">Pernas Completo (C)</div>
+        </div>
+        <span class="badge">Dia C</span>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item">
+          <div class="exercise-name">Leg Press 45º ou Horizontal</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12 a 15</span></div>
+            <div>Descanso: <span class="highlight">60s</span></div>
+          </div>
+          <div class="exercise-instructions">Pés na largura dos ombros. Desça até os joelhos formarem 90º. REGRA DE OURO: Nunca trave os joelhos na subida. Mantenha-os sempre levemente flexionados.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Cadeira Extensora</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12 a 15</span></div>
+            <div>Descanso: <span class="highlight">60s</span></div>
+          </div>
+          <div class="exercise-instructions">Alinhe o eixo da máquina com seu joelho. Estenda as pernas e segure 1 segundo no topo contraindo a coxa. Desça em 2 segundos.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Cadeira Flexora</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12 a 15</span></div>
+            <div>Descanso: <span class="highlight">60s</span></div>
+          </div>
+          <div class="exercise-instructions">Ajuste o apoio para alinhar com o joelho. Puxe o peso em direção aos glúteos. Mantenha o quadril totalmente colado no banco.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Panturrilha no Leg Press</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 15 a 20</span></div>
+            <div>Descanso: <span class="highlight">45s</span></div>
+          </div>
+          <div class="exercise-instructions">Pés na parte inferior da plataforma. Empurre apenas com a ponta dos pés, alongando bem para baixo e subindo tudo.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quinta-feira -->
+    <section class="day-card">
+      <div class="day-header">
+        <div class="day-title-group">
+          <h2>Quinta-feira</h2>
+          <div class="focus">Cardio, Core e Mobilidade</div>
+        </div>
+        <span class="badge">Queima & Proteção</span>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item">
+          <div class="exercise-name">Esteira ou Bicicleta (Moderado)</div>
+          <div class="exercise-stats">
+            <div>Duração: <span class="highlight">30 a 40 min</span></div>
+            <div>Descanso: <span class="highlight">-</span></div>
+          </div>
+          <div class="exercise-instructions">Ritmo constante onde você consegue falar, mas fica ofegante. Protege os joelhos e acelera o metabolismo sem impacto excessivo.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Prancha Abdominal (Isométrica)</div>
+          <div class="exercise-stats">
+            <div>Séries/Tempo: <span class="highlight">3 x 30 a 40s</span></div>
+            <div>Descanso: <span class="highlight">45s</span></div>
+          </div>
+          <div class="exercise-instructions">Apoie antebraços e ponta dos pés. Corpo em linha reta. Contraia forte glúteos e abdômen. Se doer a lombar, pare ou apoie os joelhos.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Abdominal Crunch</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 15</span></div>
+            <div>Descanso: <span class="highlight">45s</span></div>
+          </div>
+          <div class="exercise-instructions">Solte o ar pela boca ao subir (contrair) e inspire ao descer. Não puxe o pescoço com as mãos; a força vem do abdômen.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sexta-feira -->
+    <section class="day-card">
+      <div class="day-header">
+        <div class="day-title-group">
+          <h2>Sexta-feira</h2>
+          <div class="focus">Peito, Ombros e Tríceps (A)</div>
+        </div>
+        <span class="badge">Dia A</span>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item">
+          <div class="exercise-name">Supino na Máquina</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12</span></div>
+            <div>Descanso: <span class="highlight">60s</span></div>
+          </div>
+          <div class="exercise-instructions">Mesma execução de segunda. Tente aumentar levemente a carga se as 12 repetições estiverem fáceis.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Elevação Lateral com Halteres</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 15</span></div>
+            <div>Descanso: <span class="highlight">45s</span></div>
+          </div>
+          <div class="exercise-instructions">Em pé, halteres leves. Levante os braços lateralmente até a altura dos ombros (como se servisse água de uma jarra). Cotovelos levemente flexionados.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Tríceps na Polia (Barra Reta ou V)</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12</span></div>
+            <div>Descanso: <span class="highlight">45s</span></div>
+          </div>
+          <div class="exercise-instructions">Mesma lógica da corda. Cotovelos colados no corpo. Tronco levemente inclinado à frente.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sábado -->
+    <section class="day-card">
+      <div class="day-header">
+        <div class="day-title-group">
+          <h2>Sábado</h2>
+          <div class="focus">Costas, Bíceps e Cardio (B)</div>
+        </div>
+        <span class="badge">Dia B</span>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item">
+          <div class="exercise-name">Puxada Alta na Polia (Frente)</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12</span></div>
+            <div>Descanso: <span class="highlight">60s</span></div>
+          </div>
+          <div class="exercise-instructions">Mesma execução de terça. Foque em esmagar as costas ao puxar a barra.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Remada Baixa Sentada</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12</span></div>
+            <div>Descanso: <span class="highlight">60s</span></div>
+          </div>
+          <div class="exercise-instructions">Mesma execução de terça. Controle total na volta do movimento.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Rosca Martelo com Halteres</div>
+          <div class="exercise-stats">
+            <div>Séries/Reps: <span class="highlight">3 x 12</span></div>
+            <div>Descanso: <span class="highlight">45s</span></div>
+          </div>
+          <div class="exercise-instructions">Segure os halteres com as palmas viradas uma para a outra (pegada neutra). Alterne os braços. Ótimo para a saúde do cotovelo.</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Bicicleta ou Elíptico (Leve)</div>
+          <div class="exercise-stats">
+            <div>Duração: <span class="highlight">20 min</span></div>
+            <div>Descanso: <span class="highlight">-</span></div>
+          </div>
+          <div class="exercise-instructions">Ritmo leve para ajudar na recuperação muscular e aumentar o gasto calórico semanal.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Domingo -->
+    <section class="day-card rest-day">
+      <div class="day-header">
+        <div class="day-title-group">
+          <h2>Domingo</h2>
+          <div class="focus">Descanso Total</div>
+        </div>
+        <span class="badge">Recuperação</span>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item">
+          <div class="exercise-name">Caminhada leve ao ar livre (Opcional)</div>
+          <div class="exercise-stats">
+            <div>Duração: <span class="highlight">30 min</span></div>
+            <div>Descanso: <span class="highlight">-</span></div>
+          </div>
+          <div class="exercise-instructions">Descanse a musculatura. Foque em bater sua meta de proteínas e beber 3,5L a 4L de água.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>
